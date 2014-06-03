@@ -3,6 +3,10 @@ option-resolver.js
 
 Simple Javascript Option Resolver
 
+## Install:
+
+    'bower install --save tom32i-option-resolver.js'
+
 ## Usage:
 
 ```javascript
