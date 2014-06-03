@@ -1,5 +1,5 @@
 {
-  "name": "options-resolver.js",
+  "name": "option-resolver.js",
   "version": "0.0.1",
   "description": "Simple Javascript Option Resolver",
   "keywords": ["option", "option", "resolver", "config", "configuration"],

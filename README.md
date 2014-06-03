@@ -1,4 +1,4 @@
-options-resolver.js
+option-resolver.js
 ================
 
 Simple Javascript Option Resolver
