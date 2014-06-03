@@ -1,5 +1,5 @@
 /*!
- * option-resolver.js 0.0.1
+ * option-resolver.js 0.0.2
  * https://github.com/Tom32i/option-resolver.js
  * Copyright 2014 Thomas JARRAND
  */

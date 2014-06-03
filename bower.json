@@ -1,6 +1,6 @@
 {
   "name": "option-resolver.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple Javascript Option Resolver",
   "keywords": ["option", "option", "resolver", "config", "configuration"],
   "homepage": "https://github.com/Tom32i/option-resolver.js",
