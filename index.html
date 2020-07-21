@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Option Resolver Demo</title>
+</head>
+<body>
+    <script src="/option-resolver.js"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', () => {
+            const definition = new OptionResolver()
+                .setTypes({
+                    animation: 'boolean',
+                    color: 'string',
+                    length: 'number',
+                    debug: 'boolean',
+                })
+                .setRequired(['color'])
+                .setOptional(['debug', 'length'])
+                .setDefaults({
+                    animation: true,
+                    debug: false,
+                });
+
+            const options = definition.resolve({
+                animation: false,
+                color: 'red',
+            });
+
+            console.log(options);
+        });
+    </script>
+</body>
+</html>

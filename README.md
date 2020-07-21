@@ -5,42 +5,51 @@ Simple Javascript Option Resolver
 
 ## Install:
 
-    bower install --save tom32i-option-resolver.js
+    npm install option-resolver.js
 
 ## Usage:
 
+Define the format of your configuration:
+
 ```javascript
-var options = new OptionResolver()
+const definition = new OptionResolver()
     .setTypes({
         animation: 'boolean',
         color: 'string',
         length: 'number',
-        debug: false
+        debug: 'boolean',
     })
     .setRequired(['color'])
-    .setOptional(['debug', length])
+    .setOptional(['debug', 'length'])
     .setDefaults({
-        animation: true
-    })
-    .resolve({
-        animation: false,
-        color: 'red',
+        animation: true,
+        debug: false,
     });
+```
 
-/**
- * This will get you:
- * {
- *     animation: false,
- *     color: 'red',
- *     debug: false
- * }
- */
+Resolve a config object:
+
+```javascript
+const options = definition.resolve({
+    animation: false,
+    color: 'red',
+});
+```
+
+This return the following object:
+
+```javascript
+{
+    animation: false,
+    color: 'red',
+    debug: false,
+}
 ```
 
 ## Exception:
 
 Throws exeptions when:
 
-* A option is of the wrong type
-* A required option is not given
-* A unknown option is given
+* A `required` option is missing
+* An option valud doesn't match the expected `type`.
+* A unknown option is given. Note: You can disable this behaviour and allow extra key by specifying the `allowExtra` option as follow: `new OptionsResolver(true)`.
