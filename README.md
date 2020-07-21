@@ -7,6 +7,26 @@ Simple Javascript Option Resolver
 
     npm install option-resolver.js
 
+### Import
+
+HTML:
+
+```html
+<script src="option-resolver.js"></script>
+```
+
+ES6:
+
+```javascript
+import OptionResolver from 'option-resolver.js';
+```
+
+Node:
+
+```javascript
+const OptionResolver = require('option-resolver.js');
+```
+
 ## Usage:
 
 Define the format of your configuration:
@@ -46,9 +66,9 @@ This return the following object:
 }
 ```
 
-## Exception:
+## Validation:
 
-Throws exeptions when:
+Resolving a set of options will throw an error when:
 
 * A `required` option is missing
 * An option valud doesn't match the expected `type`.
