@@ -1,6 +1,6 @@
 {
   "name": "option-resolver.js",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Simple Javascript Option Resolver",
   "keywords": [
     "option",
@@ -23,12 +23,12 @@
   ],
   "main": "option-resolver.js",
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "babel-loader": "^8.1.0",
-    "eslint": "^5.16.0",
-    "mocha": "^8.2.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.0",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.26.0",
+    "mocha": "^8.4.0",
+    "webpack": "^5.36.0",
+    "webpack-cli": "^4.6.0"
   }
 }
