@@ -23,4 +23,12 @@ module.exports = (env, argv) => ({
       }
     ]
   },
+  devServer: {
+    static: {
+      directory: __dirname,
+    },
+    hot: false,
+    compress: true,
+    port: 8080,
+  },
 });

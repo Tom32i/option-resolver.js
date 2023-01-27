@@ -1,15 +1,22 @@
 /**
  * Option Resolver
  *
- * @param {Boolean} allowExtra
+ * @param {Boolean} strict
  */
 export default class OptionResolver {
-    constructor (allowExtra = false) {
-        this.allowExtra = allowExtra;
+    constructor (strict = true) {
+        this.strict = strict;
         this.defaults = new Map();
+        this.validators = new Map();
         this.types = new Map();
         this.optional = new Set();
         this.required = new Set();
+    }
+
+    allowExtra() {
+        this.strict = false;
+
+        return this;
     }
 
     /**
@@ -19,6 +26,17 @@ export default class OptionResolver {
      */
     setDefaults(defaults) {
         Object.entries(defaults).forEach(([key, value]) => this.defaults.set(key, value));
+
+        return this;
+    }
+
+    /**
+     * Set validators
+     *
+     * @param {Function} callacks
+     */
+    setValidators(callacks) {
+        Object.entries(callacks).forEach(([key, value]) => this.validators.set(key, value));
 
         return this;
     }
@@ -64,11 +82,9 @@ export default class OptionResolver {
      * @return {Object}
      */
     resolve(source) {
-        const options = Object.assign(this.getDefaults(), source);
-
-        this.validate(options);
-
-        return options;
+        return this.validate(
+            Object.assign(this.getDefaults(), source)
+        );
     }
 
     /**
@@ -93,6 +109,12 @@ export default class OptionResolver {
      */
     validate(options) {
         for (const key in options) {
+            if (this.validators.has(key)) {
+                options[key] = this.validators.get(key)(options[key]);
+            }
+        }
+
+        for (const key in options) {
             if (!this.optionExists(key)) {
                 throw new Error(`Unkown option "${key}".`);
             }
@@ -105,6 +127,8 @@ export default class OptionResolver {
                 throw new Error(`Option "${key}" is required.`);
             }
         }
+
+        return options;
     }
 
     /**
@@ -124,7 +148,7 @@ export default class OptionResolver {
         const givenType = typeof value;
 
         if (givenType !== expectedType) {
-            throw new Error(`Wrong value for option "${key}". Expected type "${expectedType}" but got "${givenType}".`);
+            throw new Error(`Wrong value for option "${key}": expected type "${expectedType}", got "${givenType}".`);
         }
     }
 
@@ -136,10 +160,14 @@ export default class OptionResolver {
      * @return {Boolean}
      */
     optionExists(key) {
-        if (this.allowExtra) {
+        if (!this.strict) {
             return true;
         }
 
-        return this.defaults.has(key) || this.optional.has(key) || this.required.has(key) || this.types.has(key);
+        return this.defaults.has(key)
+            || this.validators.has(key)
+            || this.optional.has(key)
+            || this.required.has(key)
+            || this.types.has(key);
     }
 }

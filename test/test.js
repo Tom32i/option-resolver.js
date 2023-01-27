@@ -2,53 +2,81 @@ const assert = require('assert');
 const OptionResolver = require('../option-resolver.js');
 
 describe('OptionResolver', () => {
-    const definition = new OptionResolver()
-        .setTypes({
-            animation: 'boolean',
-            color: 'string',
-            length: 'number',
-            debug: 'boolean',
-        })
-        .setRequired(['color'])
-        .setOptional(['debug', 'length'])
-        .setDefaults({
-            animation: true,
-            debug: false,
-        });
+    it('Resolve defaults', () => {
+        const definition = new OptionResolver().setDefaults({ foo: 'bar' });
 
-    it('Resolve options', function () {
-        const options = definition.resolve({
-            animation: false,
-            color: 'red',
-        });
-
-        assert.deepStrictEqual(options, {
-            animation: false,
-            color: 'red',
-            debug: false,
-        });
-
-        assert.equal(typeof options.length, 'undefined');
-    });
-
-    it('Missing required throws an exception', function () {
-        assert.throws(
-            () => definition.resolve({}),
-            { message: 'Option "color" is required.' }
+        assert.deepStrictEqual(
+            definition.resolve({}),
+            { foo: 'bar' }
         );
     });
 
-    it('Extra key throws an exception', function () {
+    it('Resolve validators', () => {
+        const definition = new OptionResolver().setValidators({
+            foo: value => Math.min(1000, value)
+        });
+
+        assert.deepStrictEqual(
+            definition.resolve({ foo: 1337 }),
+            { foo: 1000 }
+        );
+    });
+
+    it('Resolve types', () => {
+        const definition = new OptionResolver().setTypes({ foo: 'number' });
+
+        assert.throws(
+            () => definition.resolve({ foo: 'bar' }),
+            { message: 'Wrong value for option "foo": expected type "number", got "string".' }
+        );
+
+        assert.deepStrictEqual(
+            definition.resolve({ foo: 42 }),
+            { foo: 42 }
+        );
+    });
+
+    it('Resolve optionals', () => {
+        const definition = new OptionResolver().setOptional(['foo']);
+
+        assert.deepStrictEqual(
+            definition.resolve({}),
+            {}
+        );
+
+        assert.deepStrictEqual(
+            definition.resolve({ foo: true }),
+            { foo: true }
+        );
+    });
+
+    it('Resolve required', () => {
+        const definition = new OptionResolver().setRequired(['foo']);
+
+        assert.throws(
+            () => definition.resolve({}),
+            { message: 'Option "foo" is required.' }
+        );
+
+        assert.deepStrictEqual(
+            definition.resolve({ foo: null }),
+            { foo: null }
+        );
+    });
+
+    it('Resolve extraData', () => {
+        const definition = new OptionResolver();
+
         assert.throws(
             () => definition.resolve({ foo: 'bar' }),
             { message: 'Unkown option "foo".' }
         );
-    });
 
-    it('Wrong type throws an exception', function () {
-        assert.throws(
-            () => definition.resolve({ animation: 'bar' }),
-            { message: 'Wrong value for option "animation". Expected type "boolean" but got "string".' }
+        definition.allowExtra();
+
+        assert.deepStrictEqual(
+            definition.resolve({ foo: 'bar' }),
+            { foo: 'bar' }
         );
     });
 });

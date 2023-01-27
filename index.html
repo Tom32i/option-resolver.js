@@ -9,20 +9,16 @@
         window.addEventListener('load', () => {
             const definition = new OptionResolver()
                 .setTypes({
-                    animation: 'boolean',
                     color: 'string',
                     length: 'number',
                     debug: 'boolean',
                 })
                 .setRequired(['color'])
-                .setOptional(['debug', 'length'])
                 .setDefaults({
-                    animation: true,
                     debug: false,
                 });
 
             const options = definition.resolve({
-                animation: false,
                 color: 'red',
             });
 
