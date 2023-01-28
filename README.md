@@ -15,13 +15,13 @@ HTML:
 <script src="option-resolver.js"></script>
 ```
 
-ES6:
+ES modules:
 
 ```javascript
 import OptionResolver from 'option-resolver.js';
 ```
 
-Node:
+CommonJs modules:
 
 ```javascript
 const OptionResolver = require('option-resolver.js');
